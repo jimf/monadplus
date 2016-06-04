@@ -13,6 +13,14 @@ function runTests(Maybe) {
         mzero = MaybePlus.mzero,
         mplus = MaybePlus.mplus;
 
+    function getJust() {
+        return Just(Math.random());
+    }
+
+    function getAny() {
+        return Math.random() > 0.5 ? getJust() : Nothing();
+    }
+
     test('MaybePlus.mzero', function(t) {
         t.ok(mzero().isNothing, 'returns Nothing()');
         t.end();
@@ -23,6 +31,26 @@ function runTests(Maybe) {
         t.deepEqual(mplus(Just(1), Nothing()), Just(1), 'mplus(a, Nothing) = a');
         t.deepEqual(mplus(Nothing(), Just(1)), Just(1), 'mplus(Nothing, a) = a');
         t.deepEqual(mplus(Nothing(), Nothing()), Nothing(), 'mplus(Nothing, Nothing) = Nothing');
+        t.end();
+    });
+
+    test('MaybePlus laws', function(t) {
+        // mzero is neutral
+        // mplus is associative
+        // TODO: quickcheck would be much better for these
+        t.deepEqual(mplus(mzero(), Just(1)), Just(1));
+        t.deepEqual(mplus(mzero(), Nothing()), Nothing());
+        t.deepEqual(mplus(Just(1), mzero()), Just(1));
+        t.deepEqual(mplus(Nothing(), mzero()), Nothing());
+
+        var m = getAny(),
+            n = getAny(),
+            o = getAny();
+        t.deepEqual(
+            mplus(m, mplus(n, o)),
+            mplus(mplus(m, n), o)
+        );
+
         t.end();
     });
 
