@@ -45,7 +45,7 @@ msum([Nothing(), Nothing(), Nothing()]); //=> Nothing
 #### `maybe :: Maybe → MaybePlus`
 
 A top-level export, `maybe` receives a `Maybe` implementation and returns a
-`MaybePlus` constructor that is configured to work with the particlar `Maybe`
+`MaybePlus` constructor that is configured to work with the particular `Maybe`
 implementation given. Generally this is only called once.
 
 #### `msum :: MaybePlus → Function`
